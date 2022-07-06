@@ -1,11 +1,10 @@
 version: 2.1
 orbs:
+  python: circleci/python@2.0.3
   codecov: codecov/codecov@3.2.3
 jobs:
   build:
-    docker:
-      - image: cimg/python:3.8
-    working_directory: ~/repo
+    executor: python/default
     steps:
       - checkout
       - python/install-packages:
