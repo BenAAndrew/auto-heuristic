@@ -65,7 +65,7 @@ def decision_tree_to_js(tree: DecisionNode, feature_names: List[str]) -> str:
     return code
 
 
-def decision_tree_to_text(tree: DecisionNode, feature_names: List[str]) -> str:
+def decision_tree_to_text(tree: DecisionNode) -> str:
     def _decision_node_to_text(node, depth=0):
         indent = "|   " * depth + "|--- "
         if isinstance(node, str):
