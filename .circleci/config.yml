@@ -5,7 +5,6 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6
-    working_directory: ~/repo
     steps:
       - checkout
       - run:
