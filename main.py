@@ -20,4 +20,4 @@ with open("sample.js", "w", newline="") as f:
     f.write(decision_tree_to_js(formatted_tree, feature_names) + "\n")
 
 with open("sample.txt", "w", newline="") as f:
-    f.write(decision_tree_to_text(formatted_tree, feature_names) + "\n")
+    f.write(decision_tree_to_text(formatted_tree) + "\n")
