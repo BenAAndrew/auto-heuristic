@@ -11,7 +11,7 @@ jobs:
           pkg-manager: pip
       - run:
           name: Install additional tools
-          command: sudo pip install pytest==6.2.2 pytest-cov==2.12.1
+          command: python -m pip install pytest==6.2.2 pytest-cov==2.12.1
       - run:
           name: Run tests
           command: python -m pytest --cov=./ --cov-config=.coveragerc --durations=5
