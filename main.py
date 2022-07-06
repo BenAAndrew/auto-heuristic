@@ -5,6 +5,7 @@ from auto_heuristic import (
     get_variable_list,
     decision_tree_to_python,
     decision_tree_to_js,
+    decision_tree_to_text,
 )
 
 X, y, feature_names, class_names = load_iris_dataset()
@@ -17,3 +18,6 @@ with open("sample.py", "w") as f:
 
 with open("sample.js", "w", newline="") as f:
     f.write(decision_tree_to_js(formatted_tree, feature_names) + "\n")
+
+with open("sample.txt", "w", newline="") as f:
+    f.write(decision_tree_to_text(formatted_tree, feature_names) + "\n")

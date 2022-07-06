@@ -63,3 +63,22 @@ def decision_tree_to_js(tree: DecisionNode, feature_names: List[str]) -> str:
     code += _decision_node_to_js(tree)
     code += "\n}"
     return code
+
+
+def decision_tree_to_text(tree: DecisionNode, feature_names: List[str]) -> str:
+    def _decision_node_to_text(node, depth=0):
+        indent = "|   " * depth + "|--- "
+        if isinstance(node, str):
+            return "{}class: {}".format(indent, node)
+        else:
+            return (
+                "{}{} <= {}".format(indent, node.condition_var, node.condition_value)
+                + "\n"
+                + _decision_node_to_text(node.true_decision, depth + 1)
+                + "\n"
+                + "{}{} > {}".format(indent, node.condition_var, node.condition_value)
+                + "\n"
+                + _decision_node_to_text(node.false_decision, depth + 1)
+            )
+
+    return _decision_node_to_text(tree)
