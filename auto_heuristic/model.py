@@ -9,5 +9,4 @@ def get_model(X: np.ndarray, y: np.ndarray) -> DecisionTreeClassifier:
     # Fit the classifier with max_depth=3
     clf = DecisionTreeClassifier(max_depth=3, random_state=1234)
     model = clf.fit(X_train, y_train)
-    # print(clf.score(X_test, y_test))
     return model
