@@ -14,5 +14,5 @@ jobs:
           command: python -m pip install pytest==6.2.2 pytest-cov==2.12.1
       - run:
           name: Run tests
-          command: python -m pytest --cov=./ --cov-config=.coveragerc --durations=5
+          command: python -m pytest --cov=auto_heuristic
       - codecov/upload

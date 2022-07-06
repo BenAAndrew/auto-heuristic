@@ -10,18 +10,18 @@ FEATURE_NAMES = ["petal width", "petal length"]
 
 
 def test_decision_tree_to_text():
-    with open(os.path.join("test_files", "sample.txt")) as f:
+    with open(os.path.join("tests", "test_files", "sample.txt")) as f:
         text = f.read()
     assert decision_tree_to_text(DECISION_TREE) + "\n" == text
 
 
 def test_decision_tree_to_python():
-    with open(os.path.join("test_files", "sample.py")) as f:
+    with open(os.path.join("tests", "test_files", "sample.py")) as f:
         python_code = f.read()
     assert decision_tree_to_python(DECISION_TREE, FEATURE_NAMES) + "\n" == python_code
 
 
 def test_decision_tree_to_js():
-    with open(os.path.join("test_files", "sample.js")) as f:
+    with open(os.path.join("tests", "test_files", "sample.js")) as f:
         js_code = f.read()
     assert decision_tree_to_js(DECISION_TREE, FEATURE_NAMES) + "\n" == js_code
