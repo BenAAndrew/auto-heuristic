@@ -11,5 +11,5 @@ jobs:
           pkg-manager: pip
       - run:
           name: Run tests
-          command: python -m pytest --cov=./ --cov-config=.coveragerc --durations=5
+          command: pytest --cov=./ --cov-config=.coveragerc --durations=5
       - codecov/upload
