@@ -1,0 +1,19 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@3.2.3
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: Install additional tools
+          command: sudo pip install pytest==6.2.2 pytest-cov==2.12.1
+      - run:
+          name: Run tests
+          command: python -m pytest --cov=./ --cov-config=.coveragerc --durations=5
+      - codecov/upload
