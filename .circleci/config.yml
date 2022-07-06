@@ -10,6 +10,9 @@ jobs:
       - python/install-packages:
           pkg-manager: pip
       - run:
+          name: Install additional tools
+          command: python -m pip install pytest==6.2.2 pytest-cov==2.12.1
+      - run:
           name: Run tests
-          command: pytest --cov=./ --cov-config=.coveragerc --durations=5
+          command: python -m pytest --cov=./ --cov-config=.coveragerc --durations=5
       - codecov/upload
