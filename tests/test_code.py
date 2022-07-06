@@ -1,4 +1,4 @@
-from auto_heuristic.code import decision_tree_to_js, decision_tree_to_python, decision_tree_to_text
+from auto_heuristic.code import decision_tree_to_js, decision_tree_to_python, decision_tree_to_text, get_variable_list
 from auto_heuristic.tree import DecisionNode
 import os
 
@@ -7,6 +7,10 @@ CHILD_FALSE_BRANCH = DecisionNode("petal width", 1.75, "versicolor", "virginica"
 FALSE_BRANCH = DecisionNode("petal length", 4.75, CHILD_TRUE_BRANCH, CHILD_FALSE_BRANCH)
 DECISION_TREE = DecisionNode("petal length", 2.45, "setosa", FALSE_BRANCH)
 FEATURE_NAMES = ["petal width", "petal length"]
+
+
+def test_get_variable_list():
+    assert set(get_variable_list(DECISION_TREE)) == set(FEATURE_NAMES)
 
 
 def test_decision_tree_to_text():
