@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Heuristic generator</title>
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='album.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='prism.css') }}" rel="stylesheet" />
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="mr-2">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                        </path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <strong>Heuristic generator</strong>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">Heuristic generator</h1>
+                <form action="/" method="POST" enctype="multipart/form-data">
+                    <label class="lead text-muted" for="formFile">A tool to automatically generate basic rules for a dataset. Upload a CSV to get started.</label>
+                    <input class="form-control" type="file" id="file" name="file" />
+                    <input class="btn form-control" type="submit" />
+                </form>
+            </div>
+        </section>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="accordion" id="accordion">
+                            {% for option in options %}
+                                <div class="card">
+                                    <div class="card-header" id="heading-{{ option.depth }}">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link text-left collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{ option.depth }}" aria-expanded="false" aria-controls="collapse-{{ option.depth }}">
+                                                Depth: {{ option.depth }} (score {{ (option.score*100)|int }}%)
+                                            </button>
+                                        </h2>
+                                    </div>
+                                
+                                    <div id="collapse-{{ option.depth }}" class="collapse" aria-labelledby="heading-{{ option.depth }}" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h3>Python</h3>
+                                                    <button type="button" class="btn btn-outline-primary" onclick="navigator.clipboard.writeText('{{ option.python_code | replace('\n',"\\n") }}')">Copy</button>
+                                                    <button type="button" class="btn btn-outline-primary" onclick="download('predict.py', '{{ option.python_code | replace('\n',"\\n") }}')">Download</button>
+                                                    <pre>
+<code class="language-python">{{ option.python_code }}</code>
+                                                    </pre>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h3>Javascript</h3>
+                                                    <button type="button" class="btn btn-outline-primary" onclick="navigator.clipboard.writeText('{{ option.js_code | replace('\n',"\\n") }}')">Copy</button>
+                                                    <button type="button" class="btn btn-outline-primary" onclick="download('predict.js', '{{ option.js_code | replace('\n',"\\n") }}')">Download</button>
+                                                    <pre>
+<code class="language-javascript">{{ option.js_code }}</code>
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </main>
+
+    <footer class="text-muted">
+        <div class="container">
+            <p class="float-right">
+                <a href="#">Back to top</a>
+            </p>
+            <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+            <p>New to Bootstrap? <a href="../../">Visit the homepage</a> or read our <a
+                    href="../../getting-started/">getting started guide</a>.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='prism.js') }}"></script>
+    <script>
+    function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    function copyToClipboard(text) {
+        var sampleTextarea = document.createElement("textarea");
+        document.body.appendChild(sampleTextarea);
+        sampleTextarea.value = text; //save main text in it
+        sampleTextarea.select(); //select textarea contenrs
+        document.execCommand("copy");
+        document.body.removeChild(sampleTextarea);
+    }
+    </script>
+</body>
+
+</html>
