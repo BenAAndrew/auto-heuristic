@@ -2,7 +2,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 import numpy as np
 
-DEPTH_RANGE = range(1,6)
+DEPTH_RANGE = range(1, 6)
 MIN_SCORE = 0.5
 
 
