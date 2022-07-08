@@ -5,8 +5,9 @@ from auto_heuristic.tree import DecisionNode, extract_decision_tree
 
 def test_extract_decision_tree():
     X, y, feature_names, class_names = load_iris_dataset()
-    model = get_model(X, y)
-    tree = extract_decision_tree(model, feature_names, class_names)
+    models = get_model(X, y)
+    latest_model = models[3][0]
+    tree = extract_decision_tree(latest_model, feature_names, class_names)
 
     assert tree.condition_var == "petal length"
     assert tree.condition_value == 2.45
