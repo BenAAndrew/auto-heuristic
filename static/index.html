@@ -38,11 +38,24 @@
         <section class="jumbotron text-center">
             <div class="container">
                 <h1 class="jumbotron-heading">Heuristic generator</h1>
-                <form action="/" method="POST" enctype="multipart/form-data">
-                    <label class="lead text-muted" for="formFile">A tool to automatically generate basic rules for a dataset. Upload a CSV to get started.</label>
-                    <input class="form-control" type="file" id="file" name="file" />
-                    <input class="btn form-control" type="submit" />
-                </form>
+                <p class="lead text-muted">A tool to automatically generate basic rules for a dataset. Upload a CSV to get started.</p>
+                <div class="card">
+                    <article class="card-body">
+                        <form action="/" method="POST" enctype="multipart/form-data">
+                            <div class="form-group custom-file">
+                                <input type="file" class="custom-file-input" id="file" name="file" required>
+                                <label class="custom-file-label" for="file">Choose CSV file</label>
+                            </div>
+                            <br><br>
+                            <div class="form-group">
+                                <select class="form-control" id="target" name="target" required>
+                                    <option selected disabled>Target Column</option>
+                                </select>
+                            </div>
+                            <input class="btn btn-primary" type="submit" />                                                      
+                        </form>
+                    </article>
+                </div> 
             </div>
         </section>
 
@@ -108,29 +121,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='prism.js') }}"></script>
-    <script>
-    function download(filename, text) {
-        var element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', filename);
-
-        element.style.display = 'none';
-        document.body.appendChild(element);
-
-        element.click();
-
-        document.body.removeChild(element);
-    }
-
-    function copyToClipboard(text) {
-        var sampleTextarea = document.createElement("textarea");
-        document.body.appendChild(sampleTextarea);
-        sampleTextarea.value = text; //save main text in it
-        sampleTextarea.select(); //select textarea contenrs
-        document.execCommand("copy");
-        document.body.removeChild(sampleTextarea);
-    }
-    </script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 
 </html>

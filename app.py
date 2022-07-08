@@ -20,7 +20,8 @@ def index():
 @app.route("/", methods=["POST"])
 def upload_dataset():
     request.files["file"].save("temp.csv")
-    X, y, feature_names, class_names = load_dataset("temp.csv", "target")
+    target_column = request.values["target"]
+    X, y, feature_names, class_names = load_dataset("temp.csv", target_column)
     models = get_model(X, y)
     options = []
 
