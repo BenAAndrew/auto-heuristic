@@ -11,7 +11,26 @@ def get_variable_list(tree: DecisionNode) -> List[str]:
     return list(set(variables))
 
 
-def decision_tree_to_python(tree: DecisionNode, feature_names: List[str]) -> str:
+def format_return_value(return_values: set) -> dict:
+    def _is_float(element: any) -> bool:
+        try:
+            float(element)
+            return True
+        except ValueError:
+            return False
+
+    if return_values == {"0", "1"}:
+        return {"0": False, "1": True}
+    elif all([_is_float(i) for i in return_values]):
+        if all([i.isnumeric() for i in return_values]):
+            return {k: int(k) for k in return_values}
+        else:
+            return {k: float(k) for k in return_values}
+    else:
+        return {k: f'"{k}"' for k in return_values}
+
+
+def decision_tree_to_python(tree: DecisionNode, feature_names: List[str], return_format: dict) -> str:
     variable_names = {f: f.replace(" ", "_").lower() for f in feature_names}
     code = ""
     code += "def predict({}):".format(", ".join(variable_names.values())) + "\n"
@@ -19,7 +38,7 @@ def decision_tree_to_python(tree: DecisionNode, feature_names: List[str]) -> str
     def _decision_node_to_python(node, depth=1):
         indent = "    " * depth
         if isinstance(node, str):
-            return '{}return "{}"'.format(indent, node)
+            return "{}return {}".format(indent, return_format[node])
         else:
             return (
                 "{}if {} <= {}:".format(indent, variable_names[node.condition_var], node.condition_value)
@@ -35,7 +54,7 @@ def decision_tree_to_python(tree: DecisionNode, feature_names: List[str]) -> str
     return code
 
 
-def decision_tree_to_js(tree: DecisionNode, feature_names: List[str]) -> str:
+def decision_tree_to_js(tree: DecisionNode, feature_names: List[str], return_format: dict) -> str:
     variable_names = {
         f: "".join([w.lower() if i == 0 else w.capitalize() for i, w in enumerate(f.replace("_", " ").split(" "))])
         for f in feature_names
@@ -46,7 +65,11 @@ def decision_tree_to_js(tree: DecisionNode, feature_names: List[str]) -> str:
     def _decision_node_to_js(node, depth=1):
         indent = "  " * depth
         if isinstance(node, str):
-            return '{}return "{}";'.format(indent, node)
+            return_value = return_format[node]
+            # convert bool to lowercase
+            if isinstance(return_value, bool):
+                return_value = "true" if return_value else "false"
+            return "{}return {};".format(indent, return_value)
         else:
             return (
                 "{}if ({} <= {}) {{".format(indent, variable_names[node.condition_var], node.condition_value)
