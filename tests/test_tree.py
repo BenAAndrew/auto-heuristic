@@ -1,6 +1,8 @@
+from sklearn.model_selection import train_test_split
 from auto_heuristic.dataset import load_iris_dataset
 from auto_heuristic.model import get_model
 from auto_heuristic.tree import DecisionNode, extract_decision_tree
+from tests.test_files.sample import predict
 
 
 def test_extract_decision_tree():
@@ -28,3 +30,14 @@ def test_extract_decision_tree():
     assert tree.false_decision.false_decision.condition_value == 1.75
     assert tree.false_decision.false_decision.true_decision == "versicolor"
     assert tree.false_decision.false_decision.false_decision == "virginica"
+
+
+def test_tree_decision_quality():
+    X, y, _, class_names = load_iris_dataset()
+    _, X_test, _, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    for i, sample in enumerate(X_test):
+        _, _, petal_length, petal_width = sample
+        prediction = predict(petal_width, petal_length)
+        prediction_index = class_names.index(prediction)
+        assert prediction_index == y_test[i]
