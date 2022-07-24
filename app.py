@@ -8,6 +8,7 @@ from auto_heuristic import (
 )
 
 from flask import Flask, render_template, request
+import tempfile
 
 app = Flask(__name__, template_folder="static")
 
@@ -19,9 +20,10 @@ def index():
 
 @app.route("/", methods=["POST"])
 def upload_dataset():
-    request.files["file"].save("temp.csv")
+    path = tempfile.NamedTemporaryFile().name
+    request.files["file"].save(path)
     target_column = request.values["target"]
-    X, y, feature_names, class_names = load_dataset("temp.csv", target_column)
+    X, y, feature_names, class_names = load_dataset(path, target_column)
     models = get_model(X, y)
     assert models, "No successful heuristic found"
     options = []
