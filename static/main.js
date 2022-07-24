@@ -12,13 +12,16 @@ fileUpload.addEventListener('change', (event) => {
     reader.addEventListener("load", () => {
         const header = reader.result.split("\n")[0].trim();
         console.log(header);
-        if (header.length == 0){
+        if (header.length == 0 || !header.includes(",")){
             alert("No header in CSV");
         }
 
         $('#target').empty();
 
         const columns = header.split(",");
+        if (columns.length < 2){
+            alert("Not enough columns in CSV");
+        }
         for(const column of columns){
             columnSelector.appendChild(new Option(column, column));
         }

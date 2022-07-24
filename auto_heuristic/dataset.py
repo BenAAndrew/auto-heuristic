@@ -19,8 +19,11 @@ def convert_column(column: pd.DataFrame) -> Tuple[np.array, np.array]:
 
 def load_dataset(path: str, target_column: str) -> Tuple[np.ndarray, np.ndarray, List[str], List[str]]:
     df = pd.read_csv(path)
+    assert df.notnull().values.all(), "Invalid CSV. Has null values"
     columns = list(df.columns)
+    assert len(columns) > 1, "Invalid CSV. Only one column"
     assert target_column in columns, f"{target_column} not in list of columns ({columns})"
+    assert len(df) > 10, "Insufficent samples in CSV"
     df[target_column] = df[target_column].astype(str)
 
     # One-hot encode non-numeric columns

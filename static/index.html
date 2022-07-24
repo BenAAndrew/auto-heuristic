@@ -60,6 +60,12 @@
             </div>
         </section>
 
+        {% if error %}
+        <script>
+            alert("Error: {{error}}")
+        </script>
+        {% endif %}
+
         {% if options %}
         <div class="album py-5 bg-light">
             <div class="container">

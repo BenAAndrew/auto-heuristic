@@ -24,18 +24,22 @@ def upload_dataset():
     path = tempfile.NamedTemporaryFile().name
     request.files["file"].save(path)
     target_column = request.values["target"]
-    X, y, feature_names, class_names = load_dataset(path, target_column)
-    models = get_model(X, y)
-    assert models, "No successful heuristic found"
-    return_format = format_return_value(set(y))
-    options = []
 
-    for depth, (clf, score) in models.items():
-        formatted_tree = extract_decision_tree(clf, feature_names, class_names)
-        variable_list = get_variable_list(formatted_tree)
-        python_code = decision_tree_to_python(formatted_tree, variable_list, return_format)
-        js_code = decision_tree_to_js(formatted_tree, variable_list, return_format)
-        options.append({"depth": depth, "score": score, "python_code": python_code, "js_code": js_code})
+    try:
+        X, y, feature_names, class_names = load_dataset(path, target_column)
+        models = get_model(X, y)
+        assert models, "No successful heuristic found"
+        return_format = format_return_value(set(y))
+        options = []
+
+        for depth, (clf, score) in models.items():
+            formatted_tree = extract_decision_tree(clf, feature_names, class_names)
+            variable_list = get_variable_list(formatted_tree)
+            python_code = decision_tree_to_python(formatted_tree, variable_list, return_format)
+            js_code = decision_tree_to_js(formatted_tree, variable_list, return_format)
+            options.append({"depth": depth, "score": score, "python_code": python_code, "js_code": js_code})
+    except AssertionError as e:
+        return render_template("index.html", error=e)
 
     return render_template("index.html", options=reversed(options))
 
