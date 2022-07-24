@@ -30,10 +30,12 @@ def format_return_value(return_values: set) -> dict:
         return {k: f'"{k}"' for k in return_values}
 
 
-def decision_tree_to_python(tree: DecisionNode, feature_names: List[str], return_format: dict, performance: float) -> str:
+def decision_tree_to_python(
+    tree: DecisionNode, feature_names: List[str], return_format: dict, performance: float
+) -> str:
     variable_names = {f: f.replace(" ", "_").lower() for f in feature_names}
     code = "def predict({}):".format(", ".join(variable_names.values())) + "\n"
-    code += "    # Accuracy: {}%".format(int(performance*100)) + "\n"
+    code += "    # Accuracy: {}%".format(int(performance * 100)) + "\n"
 
     def _decision_node_to_python(node, depth=1):
         indent = "    " * depth
@@ -60,7 +62,7 @@ def decision_tree_to_js(tree: DecisionNode, feature_names: List[str], return_for
         for f in feature_names
     }
     code = "function predict({}) {{".format(", ".join(variable_names.values())) + "\n"
-    code += "  // Accuracy: {}%".format(int(performance*100)) + "\n"
+    code += "  // Accuracy: {}%".format(int(performance * 100)) + "\n"
 
     def _decision_node_to_js(node, depth=1):
         indent = "  " * depth
