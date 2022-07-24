@@ -14,6 +14,7 @@ FALSE_BRANCH = DecisionNode("petal length", 4.75, CHILD_TRUE_BRANCH, CHILD_FALSE
 DECISION_TREE = DecisionNode("petal length", 2.45, "setosa", FALSE_BRANCH)
 FEATURE_NAMES = ["petal width", "petal length"]
 RETURN_FORMAT = {"setosa": '"setosa"', "versicolor": '"versicolor"', "virginica": '"virginica"'}
+PERFORMANCE = 1.0
 
 
 def test_get_variable_list():
@@ -29,13 +30,13 @@ def test_decision_tree_to_text():
 def test_decision_tree_to_python():
     with open(os.path.join("tests", "test_files", "sample.py")) as f:
         python_code = f.read()
-    assert decision_tree_to_python(DECISION_TREE, FEATURE_NAMES, RETURN_FORMAT) + "\n" == python_code
+    assert decision_tree_to_python(DECISION_TREE, FEATURE_NAMES, RETURN_FORMAT, PERFORMANCE) + "\n" == python_code
 
 
 def test_decision_tree_to_js():
     with open(os.path.join("tests", "test_files", "sample.js")) as f:
         js_code = f.read()
-    assert decision_tree_to_js(DECISION_TREE, FEATURE_NAMES, RETURN_FORMAT) + "\n" == js_code
+    assert decision_tree_to_js(DECISION_TREE, FEATURE_NAMES, RETURN_FORMAT, PERFORMANCE) + "\n" == js_code
 
 
 def test_format_return_value():

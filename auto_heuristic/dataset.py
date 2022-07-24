@@ -35,5 +35,10 @@ def load_dataset(path: str, target_column: str) -> Tuple[np.ndarray, np.ndarray,
             df[column] = converted_column
 
     data_columns = [c for c in columns if c != target_column]
-    target_values = list(set(df[target_column]))
+
+    target_values = []
+    for value in df[target_column]:
+        if value not in target_values:
+            target_values.append(value)
+
     return np.array(df[data_columns]), np.array(df[target_column]), data_columns, target_values
