@@ -5,11 +5,6 @@ from pandas.api.types import is_numeric_dtype
 from typing import List, Tuple
 
 
-def load_iris_dataset() -> Tuple[np.ndarray, np.ndarray, List[str], List[str]]:
-    iris = datasets.load_iris()
-    return iris.data, iris.target, [i[:-5] for i in iris.feature_names], list(iris.target_names)
-
-
 def get_column_values(column: pd.Series) -> List[str]:
     target_values = []
     for value in column:

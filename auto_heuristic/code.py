@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from auto_heuristic.tree import DecisionNode
 
 
@@ -30,7 +30,7 @@ def format_return_value(return_values: set) -> dict:
         return {k: f'"{k}"' for k in return_values}
 
 
-def format_if_statement(variable, value):
+def format_if_statement(variable: str, value: Union[str, float]) -> str:
     if isinstance(value, str):
         return '{} == "{}"'.format(variable, value)
     else:

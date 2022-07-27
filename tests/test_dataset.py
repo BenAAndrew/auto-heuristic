@@ -1,7 +1,7 @@
-from auto_heuristic.dataset import load_dataset, get_column_values
 import os
 import pandas as pd
 
+from auto_heuristic.dataset import load_dataset, get_column_values
 
 def test_load_dataset():
     X, y, feature_names, class_names, _ = load_dataset(os.path.join("tests", "test_files", "iris.csv"), "target")
