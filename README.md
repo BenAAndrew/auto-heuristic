@@ -1,5 +1,6 @@
 # auto-heuristic
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/BenAAndrew/auto-heuristic/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/BenAAndrew/auto-heuristic/tree/main)
 [![codecov](https://codecov.io/gh/BenAAndrew/auto-heuristic/branch/main/graph/badge.svg?token=V4U2GG7X9Y)](https://codecov.io/gh/BenAAndrew/auto-heuristic)
 
 ## [Live demo](https://heuristic-generator.herokuapp.com/)
@@ -37,3 +38,13 @@ def predict(petal_width, petal_length):
 Using a [DecisionTreeClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html) the app automatically explores a variety of tree depths to identify the best trade off between accuracy and complexity.
 
 It then converts this decision tree into code so that you can quickly implement it into your codebase.
+
+## Local setup
+1. Install Python 3.8
+2. `pip install -r requirements.txt`
+
+### Web interface
+`python app.py`
+
+### CLI
+`python cli.py`
