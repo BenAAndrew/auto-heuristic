@@ -30,6 +30,13 @@ def format_return_value(return_values: set) -> dict:
         return {k: f'"{k}"' for k in return_values}
 
 
+def format_if_statement(variable, value):
+    if isinstance(value, str):
+        return '{} == "{}"'.format(variable, value)
+    else:
+        return "{} <= {}".format(variable, value)
+
+
 def decision_tree_to_python(
     tree: DecisionNode, feature_names: List[str], return_format: dict, performance: float
 ) -> str:
@@ -43,7 +50,7 @@ def decision_tree_to_python(
             return "{}return {}".format(indent, return_format[node])
         else:
             return (
-                "{}if {} <= {}:".format(indent, variable_names[node.condition_var], node.condition_value)
+                "{}if {}:".format(indent, format_if_statement(variable_names[node.condition_var], node.condition_value))
                 + "\n"
                 + _decision_node_to_python(node.true_decision, depth + 1)
                 + "\n"
@@ -74,7 +81,9 @@ def decision_tree_to_js(tree: DecisionNode, feature_names: List[str], return_for
             return "{}return {};".format(indent, return_value)
         else:
             return (
-                "{}if ({} <= {}) {{".format(indent, variable_names[node.condition_var], node.condition_value)
+                "{}if ({}) {{".format(
+                    indent, format_if_statement(variable_names[node.condition_var], node.condition_value)
+                )
                 + "\n"
                 + _decision_node_to_js(node.true_decision, depth + 1)
                 + "\n"
@@ -88,22 +97,3 @@ def decision_tree_to_js(tree: DecisionNode, feature_names: List[str], return_for
     code += _decision_node_to_js(tree)
     code += "\n}"
     return code
-
-
-def decision_tree_to_text(tree: DecisionNode) -> str:
-    def _decision_node_to_text(node, depth=0):
-        indent = "|   " * depth + "|--- "
-        if isinstance(node, str):
-            return "{}class: {}".format(indent, node)
-        else:
-            return (
-                "{}{} <= {}".format(indent, node.condition_var, node.condition_value)
-                + "\n"
-                + _decision_node_to_text(node.true_decision, depth + 1)
-                + "\n"
-                + "{}{} > {}".format(indent, node.condition_var, node.condition_value)
-                + "\n"
-                + _decision_node_to_text(node.false_decision, depth + 1)
-            )
-
-    return _decision_node_to_text(tree)

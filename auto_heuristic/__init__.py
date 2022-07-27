@@ -6,5 +6,4 @@ from auto_heuristic.code import (
     format_return_value,
     decision_tree_to_python,
     decision_tree_to_js,
-    decision_tree_to_text,
 )

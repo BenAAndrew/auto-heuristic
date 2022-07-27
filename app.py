@@ -26,14 +26,14 @@ def upload_dataset():
     target_column = request.values["target"]
 
     try:
-        X, y, feature_names, class_names = load_dataset(path, target_column)
+        X, y, feature_names, class_names, encoded_columns = load_dataset(path, target_column)
         models = get_model(X, y)
         assert models, "No successful heuristic found"
         return_format = format_return_value(set(y))
         options = []
 
         for depth, (clf, score) in models.items():
-            formatted_tree = extract_decision_tree(clf, feature_names, class_names)
+            formatted_tree = extract_decision_tree(clf, feature_names, class_names, encoded_columns)
             variable_list = get_variable_list(formatted_tree)
             python_code = decision_tree_to_python(formatted_tree, variable_list, return_format, score)
             js_code = decision_tree_to_js(formatted_tree, variable_list, return_format, score)

@@ -13,19 +13,30 @@ class DecisionNode:
 
 
 def extract_decision_tree(
-    clf: DecisionTreeClassifier, feature_names: List[str], class_names: List[str]
+    clf: DecisionTreeClassifier, feature_names: List[str], class_names: List[str], encoded_columns: dict
 ) -> DecisionNode:
     tree = clf.tree_
     tree_feature_names = [feature_names[i] if i != _tree.TREE_UNDEFINED else None for i in tree.feature]
 
     def recurse(node, depth):
         if tree.feature[node] != _tree.TREE_UNDEFINED:
-            return DecisionNode(
-                condition_var=tree_feature_names[node],
-                condition_value=np.round(tree.threshold[node], 2),
-                true_decision=recurse(tree.children_left[node], depth + 1),
-                false_decision=recurse(tree.children_right[node], depth + 1),
-            )
+            variable = tree_feature_names[node]
+            if variable in encoded_columns:
+                # Categorical field
+                return DecisionNode(
+                    condition_var=encoded_columns[variable],
+                    condition_value=variable,
+                    true_decision=recurse(tree.children_right[node], depth + 1),
+                    false_decision=recurse(tree.children_left[node], depth + 1),
+                )
+            else:
+                # Continuous field
+                return DecisionNode(
+                    condition_var=variable,
+                    condition_value=np.round(tree.threshold[node], 2),
+                    true_decision=recurse(tree.children_left[node], depth + 1),
+                    false_decision=recurse(tree.children_right[node], depth + 1),
+                )
         else:
             return class_names[np.argmax(tree.value[node])]
 
