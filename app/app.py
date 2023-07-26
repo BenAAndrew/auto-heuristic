@@ -46,7 +46,3 @@ def upload_dataset():
         return render_template("index.html", error=e)
 
     return render_template("index.html", options=reversed(options))
-
-
-if __name__ == "__main__":
-    app.run(debug=False)
